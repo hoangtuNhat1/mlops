@@ -1,0 +1,45 @@
+version: '3.7'
+
+volumes: 
+  grafana_data: {}
+
+networks: 
+  front-tier: 
+  back-tier: 
+
+services: 
+  db:
+    image: postgres       # Use the desired PostgreSQL version
+    restart: always 
+    environment:
+      # POSTGRES_USER: your_user     # Replace with your PostgreSQL username
+      POSTGRES_PASSWORD: example   # Replace with your PostgreSQL password
+      # POSTGRES_DB: your_database     # Replace with your PostgreSQL database name
+    ports:
+      - "5432:5432"   # Expose port 5432 for PostgreSQL
+    networks:
+      - back-tier 
+  adminer:
+    image: adminer       # Use the desired PostgreSQL version
+    restart: always 
+    ports:
+      - "8080:8080"   # Expose port 5432 for PostgreSQL
+    networks:
+      - back-tier 
+      - front-tier 
+  grafana:
+    image: grafana/grafana      
+    user: "472"
+    ports:
+      - "3000:3000"   
+    volumes:
+      - ./config/grafana_datasources.yaml:/etc/grafana/provisioning/datasources/datasource.yaml:ro
+      - ./config/grafana_dashboards.yaml:/etc/grafana/provisioning/dashboards/dashboards.yaml:ro
+      - ./dashboards:/opt/grafana/dashboards
+    networks:
+      - back-tier 
+      - front-tier 
+    restart: always 
+    
+
+
