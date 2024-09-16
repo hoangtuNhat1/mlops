@@ -1,0 +1,5 @@
+fastapi
+uvicorn
+scikit-learn  # Downgrade scikit-learn to ensure compatibility
+numpy        # Pin numpy to a compatible version
+pydantic
