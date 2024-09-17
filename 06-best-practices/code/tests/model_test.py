@@ -41,16 +41,12 @@ def test_predict():
         "petal_width": 1.5
     }
     
-    # Convert features to IrisInput instance
     flower = model.IrisInput(**features)
 
-    # Call the predict_iris method to get the prediction
     actual_prediction = model_service.predict_iris(flower)
 
-    # Define the expected prediction based on your model's behavior
-    expected_prediction = "versicolor"  # Update this to the correct expected value
+    expected_prediction = "versicolor" 
 
-    # Assert the actual prediction matches the expected prediction
     assert actual_prediction["prediction"] == expected_prediction
 def test_lambda_handler():
         event = {
