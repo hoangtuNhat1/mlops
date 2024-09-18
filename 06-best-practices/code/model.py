@@ -5,11 +5,19 @@ import os
 import mlflow
 from pydantic import BaseModel
 
-# Kinesis client initialization
+def get_model_path(run_id: str) :
+    model_location = os.getenv('MODEL_LOCATION')
+    if model_location is not None : 
+            return model_location
+    model_bucket = os.getenv("MODEL_BUCKET", 'nir-mlflow-artifacts-bucket')
+    experiment_id = os.getenv("MLFLOW_EXPERIMENT_ID", '1')
+    model_path = f's3://{model_bucket}/{experiment_id}/{run_id}/artifacts/models'
+    return model_path
+# Kinesis client initialization                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
 def load_model(run_id: str) :  
-        logged_model = f's3://nir-mlflow-artifacts-bucket/1/{run_id}/artifacts/models'
-        model = mlflow.pyfunc.load_model(logged_model)
-        return model
+    model_path = get_model_path(run_id)
+    model = mlflow.pyfunc.load_model(model_path)
+    return model
 class IrisInput(BaseModel):
     sepal_length: float
     sepal_width: float
@@ -96,5 +104,5 @@ def init(prediction_stream_name: str, run_id: str, model_version: str, test_run:
                 kinesis_client = boto3.client('kinesis')
                 kinesis_callback = KinesisCallback(kinesis_client, prediction_stream_name)
                 callbacks.append(kinesis_callback.put_record)
-        model_service = ModelService(model, model_version)
+        model_service = ModelService(model, model_version, callbacks)
         return model_service

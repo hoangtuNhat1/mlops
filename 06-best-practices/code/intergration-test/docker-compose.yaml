@@ -1,0 +1,15 @@
+services:
+  backend:
+    image: ${LOCAL_IMAGE_NAME}
+    ports:
+      - "2000:8080"
+    environment:
+      RUN_ID: 'Test123'
+      PREDICTIONS_STREAM_NAME: 'flower_predictions'
+      TEST_RUN: 'True'
+      AWS_DEFAULT_REGION: 'ap-southeast-2'
+      MODEL_LOCATION: "/app/model/"
+      AWS_ACCESS_KEY_ID: ''
+      AWS_SECRET_ACCESS_KEY: ''
+    volumes:
+      - ./model:/app/model/
