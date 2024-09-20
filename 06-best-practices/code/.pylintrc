@@ -1,0 +1,5 @@
+load-plugins=pylint_pydantic
+[MESSAGES CONTROL]
+disable=E1101  # no-member error
+[MASTER]
+extension-pkg-whitelist=pydantic

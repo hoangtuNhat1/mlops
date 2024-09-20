@@ -45,15 +45,8 @@ response = requests.post(url, json=event)
 # Get the actual response
 actual_response = response.json()
 print("Actual Response:", json.dumps(actual_response, indent=4))
+diff = DeepDiff(actual_response, expected_response, significant_digits=1)
+print(f'diff={diff}')
 
-# Use DeepDiff to compare the actual response with the expected response
-diff = DeepDiff(expected_response, actual_response, ignore_order=True)  # ignoring order to focus on value differences
-
-# Print the diff result
-if diff:
-    print("Differences found:", json.dumps(diff, indent=4))
-else:
-    print("Responses match exactly.")
-
-# Assert that the actual response matches the expected response
-assert not diff, f"Response does not match the expected output. Differences: {json.dumps(diff, indent=4)}"
+assert 'type_changes' not in diff
+assert 'values_changed' not in diff

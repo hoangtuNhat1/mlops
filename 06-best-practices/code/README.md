@@ -191,3 +191,27 @@ LOCAL_IMAGE="stream-model-flower:v1"
 docker tag ${LOCAL_IMAGE} ${REMOTE_IMAGE}
 docker push ${REMOTE_IMAGE}
 ```
+
+```bash
+aws --endpoint-url=http://localhost:4566 kinesis list-streams
+```
+
+```bash
+aws --endpoint-url=http://localhost:4566 \
+    kinesis create-stream \
+    --stream-name flower_predictions \
+    --shard-count 1
+``` 
+
+```bash
+SHARD_ITERATOR=$(aws --endpoint-url=http://localhost:4566  kinesis \
+    get-shard-iterator \
+        --shard-id ${SHARD} \
+        --shard-iterator-type TRIM_HORIZON \
+        --stream-name ${PREDICTIONS_STREAM_NAME} \
+        --query 'ShardIterator' \
+)
+RESULT=$(aws --endpoint-url=http://localhost:4566  kinesis get-records --shard-iterator $SHARD_ITERATOR)
+
+echo ${RESULT} | jq -r '.Records[0].Data' | base64 --decode
+``` 
