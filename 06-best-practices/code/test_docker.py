@@ -1,10 +1,9 @@
 import base64
 import requests
 import json
-from deepdiff import DeepDiff  # Importing deepdiff for response comparison
-
+from deepdiff import DeepDiff
 # URL for the Lambda function
-url = "http://localhost:2000/2015-03-31/functions/function/invocations"
+url = "http://localhost:8080/2015-03-31/functions/function/invocations"
 
 # Simulate the input event
 flower_data = {
@@ -31,7 +30,7 @@ event = {
 expected_response = {
     'predictions': [{
         'model': 'model_type',
-        'version': 'Test123',
+        'version': '123',
         'prediction': {
             'flower': {'prediction': 'setosa'},
             'flower_id': 1
@@ -42,7 +41,7 @@ expected_response = {
 # Make the POST request
 response = requests.post(url, json=event)
 
-# Get the actual response
+# Print the actual response for debugging using json.dumps for pretty printing
 actual_response = response.json()
 print("Actual Response:", json.dumps(actual_response, indent=4))
 diff = DeepDiff(actual_response, expected_response, significant_digits=1)
@@ -50,3 +49,4 @@ print(f'diff={diff}')
 
 assert 'type_changes' not in diff
 assert 'values_changed' not in diff
+
