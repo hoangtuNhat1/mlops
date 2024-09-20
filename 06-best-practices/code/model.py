@@ -10,11 +10,17 @@ import boto3
 import mlflow
 from pydantic import BaseModel
 
+
 def get_model_path(run_id: str) -> str:
     """Get the path to the model artifact."""
     model_location = os.getenv('MODEL_LOCATION')
     if model_location is not None:
         return model_location
+
+def get_model_path(run_id: str) :
+    model_location = os.getenv('MODEL_LOCATION')
+    if model_location is not None : 
+            return model_location
     model_bucket = os.getenv("MODEL_BUCKET", 'nir-mlflow-artifacts-bucket')
     experiment_id = os.getenv("MLFLOW_EXPERIMENT_ID", '1')
     model_path = f's3://{model_bucket}/{experiment_id}/{run_id}/artifacts/models'
@@ -119,3 +125,4 @@ test_run: bool
         callbacks.append(kinesis_callback.put_record)
     model_service = ModelService(model, model_version, callbacks)
     return model_service
+
