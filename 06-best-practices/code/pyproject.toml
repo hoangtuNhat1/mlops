@@ -1,0 +1,18 @@
+[tool.pylint]
+load-plugins = ["pylint_pydantic"]
+
+[tool.pylint."MESSAGES CONTROL"]
+disable = [
+    "E1101",
+    "print-statement",
+    "missing-function-docstring",
+    "missing-class-docstring",
+    "import-error",
+    "missing-module-docstring",
+    "too-few-public-methods",
+    "line-too-long",
+    "missing-final-newline",
+]
+
+[tool.pylint."MASTER"]
+extension-pkg-whitelist = ["pydantic"]
