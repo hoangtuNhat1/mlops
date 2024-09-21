@@ -6,10 +6,15 @@ services:
     environment:
       RUN_ID: 'Test123'
       PREDICTIONS_STREAM_NAME: 'flower_predictions'
-      TEST_RUN: 'True'
       AWS_DEFAULT_REGION: 'ap-southeast-2'
       MODEL_LOCATION: "/app/model/"
-      AWS_ACCESS_KEY_ID: ''
-      AWS_SECRET_ACCESS_KEY: ''
+
+      KINESIS_ENDPOINT_URL: 'http://kinesis:4566/'
     volumes:
       - ./model:/app/model/
+  kinesis:
+    image: localstack/localstack
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=kinesis
