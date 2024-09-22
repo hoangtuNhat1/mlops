@@ -8,6 +8,7 @@ services:
       PREDICTIONS_STREAM_NAME: 'flower_predictions'
       AWS_DEFAULT_REGION: 'ap-southeast-2'
       MODEL_LOCATION: "/app/model/"
+ 
       KINESIS_ENDPOINT_URL: 'http://kinesis:4566/'
     volumes:
       - ./model:/app/model/

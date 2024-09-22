@@ -4,11 +4,15 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+mlflow = "*"
+pydantic = "*"
+deepdiff = "*"
 
 [dev-packages]
 pytest = "*"
 black = "*"
 isort = "*"
+pre-commit = "*"
 
 [requires]
 python_version = "3.10"

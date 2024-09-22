@@ -1,11 +1,11 @@
 ## Machine Learning for Streaming
 
 * Scenario
-* Creating the role 
+* Creating the role
 * Create a Lambda function, test it
 * Create a Kinesis stream
 * Connect the function to the stream
-* Send the records 
+* Send the records
 
 Links
 
@@ -17,7 +17,7 @@ Links
 
 
 ```bash
-KINESIS_STREAM_INPUT=flower_event 
+KINESIS_STREAM_INPUT=flower_event
 aws kinesis put-record \
     --stream-name ${KINESIS_STREAM_INPUT} \
     --partition-key 1 \
@@ -39,7 +39,7 @@ Record example
     "sepal_width": 3.2,
     "petal_length": 4.5,
     "petal_width": 1.5
-    }, 
+    },
     "flower_id": 123
 }
 ```
@@ -57,7 +57,7 @@ aws kinesis put-record \
             "sepal_width": 3.2,
             "petal_length": 4.5,
             "petal_width": 1.5
-            }, 
+            },
         "flower_id": 123
     }'
 ```
@@ -105,7 +105,7 @@ SHARD_ITERATOR=$(aws kinesis \
 RESULT=$(aws kinesis get-records --shard-iterator $SHARD_ITERATOR)
 
 echo ${RESULT} | jq -r '.Records[0].Data' | base64 --decode
-``` 
+```
 
 
 ### Running the test
@@ -180,7 +180,7 @@ Logging in
 $(aws ecr get-login --no-include-email)
 ```
 
-Pushing 
+Pushing
 
 ```bash
 REMOTE_URI="136165152383.dkr.ecr.ap-southeast-2.amazonaws.com/flower-model"
@@ -201,7 +201,7 @@ aws --endpoint-url=http://localhost:4566 \
     kinesis create-stream \
     --stream-name flower_predictions \
     --shard-count 1
-``` 
+```
 
 ```bash
 SHARD_ITERATOR=$(aws --endpoint-url=http://localhost:4566  kinesis \
@@ -214,4 +214,4 @@ SHARD_ITERATOR=$(aws --endpoint-url=http://localhost:4566  kinesis \
 RESULT=$(aws --endpoint-url=http://localhost:4566  kinesis get-records --shard-iterator $SHARD_ITERATOR)
 
 echo ${RESULT} | jq -r '.Records[0].Data' | base64 --decode
-``` 
+```
